@@ -14,7 +14,7 @@ module.exports = {
             directory: './db/migrations'
         },
         seeds: {
-            directory: './db/seeds'
+            directory: __dirname + '/db/seeds/development'
         }
     },
     test: {
@@ -26,8 +26,11 @@ module.exports = {
             charset: 'utf8'
         },
         migrations: {
-            directory: './db/migrations'
+            directory: __dirname + '/db/migrations'
         },
+        seeds: {
+            directory: __dirname + '/db/seeds/test'
+        }
     },
     production: {
         client: 'pg',
@@ -37,7 +40,10 @@ module.exports = {
             max: 10
         },
         migrations: {
-            directory: './db/migrations'
+            directory: __dirname + '/db/migrations'
+        },
+        seeds: {
+            directory: __dirname + '/db/seeds/production'
         }
     }
 };
