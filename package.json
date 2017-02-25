@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "nodemon ./bin/www",
     "test": "mocha",
-    "migrate": "knex migrate:latest"
+    "migrate_dev": "knex migrate:latest --env development",
+    "migrate_test": "knex migrate:latest --env test",
+    "seed_dev": "knex seed:run --env development",
+    "seed_test": "knex seed:run --env test"
   },
   "keywords": [],
   "author": "",
