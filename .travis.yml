@@ -30,4 +30,4 @@ before_script:
   - createuser -U postgres -s travis
   - psql -c 'create database sg_db_test;' -U postgres
   - knex migrate:latest --env test
-  - knex seed:latest --env test
+  - knex seed:run --env test
