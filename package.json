@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./bin/www",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "mocha",
     "migrate": "knex migrate:latest"
   },
   "keywords": [],
