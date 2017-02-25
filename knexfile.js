@@ -5,7 +5,7 @@ module.exports = {
     development: {
         client: 'pg',
         connection: {
-            database: 'sg_db',
+            database: 'sg_db_dev',
             user: 'postgres',
             password: 'postgres',
             charset: 'utf8'
