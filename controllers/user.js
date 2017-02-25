@@ -7,11 +7,13 @@ module.exports = {
 
     fetchAll: (req, res, next) => {
         userCollection.forge()
-            .fetch({withRelated: ['role']})
+            .fetch({
+                withRelated: ['role']
+            })
             .then(function(collection) {
                 res.status(200).json({
                     "error": false,
-                    data: collection
+                    "data": collection
                 });
             })
             .catch(function(err) {
@@ -22,12 +24,16 @@ module.exports = {
             });
     },
     fetchOne: (req, res, next) => {
-        User.forge({id: req.params.id})
-            .fetch({withRelated: ['role']})
+        User.forge({
+                id: req.params.id
+            })
+            .fetch({
+                withRelated: ['role']
+            })
             .then(function(user) {
                 res.status(200).json({
                     "error": false,
-                    data: user
+                    "data": user
                 });
             })
             .catch(function(err) {
@@ -37,7 +43,27 @@ module.exports = {
                 });
             });
     },
+    add: (req, res, next) => {
+        User.forge(Object.assign(req.body, {
+                disabled: false
+            }))
+            .save()
+            .then(function(user) {
+                res.json({
+                    "error": false,
+                    "data": user
 
+                });
+            })
+            .catch(function(err) {
+                res.status(500).json({
+                    "error": true,
+                    "data": {
+                        "message": err.message
+                    }
+                });
+            });
+    },
     forbidden: (req, res, next) => {
         res.status(403).json({
             "error": true,

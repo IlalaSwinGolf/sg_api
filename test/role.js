@@ -10,27 +10,28 @@ const knex = require('knex')(config);
 
 
 chai.use(chaiHttp);
-beforeEach(function(done) {
-    knex.migrate.rollback()
-        .then(function() {
-            knex.migrate.latest()
-                .then(function() {
-                    return knex.seed.run()
-                        .then(function() {
-                            done();
-                        });
-                });
-        });
-});
-
-afterEach(function(done) {
-    knex.migrate.rollback()
-        .then(function() {
-            done();
-        });
-});
 
 describe('Roles routes', function() {
+    before(function(done) {
+        knex.migrate.rollback()
+            .then(function() {
+                knex.migrate.latest()
+                    .then(function() {
+                        return knex.seed.run()
+                            .then(function() {
+                                done();
+                            });
+                    });
+            });
+    });
+
+    after(function(done) {
+        knex.migrate.rollback()
+            .then(function() {
+                done();
+            });
+    });
+
 
     it('should return all roles', function(done) {
         chai.request(server)
