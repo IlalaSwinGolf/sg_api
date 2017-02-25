@@ -15,7 +15,6 @@ describe('API Routes', function() {
         chai.request(server)
             .get('/api/' + APIVersion + '/roles')
             .end(function(err, res) {
-                console.log(res.body.data);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.data.should.be.a('array');
@@ -28,7 +27,6 @@ describe('API Routes', function() {
         chai.request(server)
             .post('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                console.log(res.body.data);
                 res.should.have.status(403);
                 done();
             });
@@ -37,7 +35,6 @@ describe('API Routes', function() {
         chai.request(server)
             .put('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                console.log(res.body.data);
                 res.should.have.status(403);
                 done();
             });
@@ -46,7 +43,6 @@ describe('API Routes', function() {
         chai.request(server)
             .delete('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                console.log(res.body.data);
                 res.should.have.status(403);
                 done();
             });
@@ -55,7 +51,6 @@ describe('API Routes', function() {
         chai.request(server)
             .get('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                console.log(res.body.data);
                 res.should.have.status(403);
                 done();
             });
