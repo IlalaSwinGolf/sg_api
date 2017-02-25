@@ -21,22 +21,22 @@ module.exports = {
                 });
             });
     },
-    findById: (req, res, next) => {
-        Role.forge({id: req.params.id})
-            .fetch()
-            .then(function(role) {
-                res.status(200).json({
-                    "error": false,
-                    data: role
-                });
-            })
-            .catch(function(err) {
-                res.status(500).json({
-                    "error": true,
-                    "message": err.message
-                });
-            });
-    },
+    // findById: (req, res, next) => {
+    //     Role.forge({id: req.params.id})
+    //         .fetch()
+    //         .then(function(role) {
+    //             res.status(200).json({
+    //                 "error": false,
+    //                 data: role
+    //             });
+    //         })
+    //         .catch(function(err) {
+    //             res.status(500).json({
+    //                 "error": true,
+    //                 "message": err.message
+    //             });
+    //         });
+    // },
 
     forbidden: (req, res, next) => {
         res.status(403).json({

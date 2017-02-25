@@ -1,7 +1,9 @@
 const express = require('express');
 const roleController = require('./controllers/role');
 const roleRoutes = require ('./routes/role');
+const APIVersion =  require ('./api_version')();
 
+console.log("API Version: " + APIVersion);
 module.exports = function(app) {
     const apiRoutes = express.Router();
 
@@ -12,5 +14,5 @@ module.exports = function(app) {
         message: 'Welcome to swin-golf scorecard application.',
     }));
 
-    app.use('/api', apiRoutes);
+    app.use('/api/' + APIVersion, apiRoutes);
 }
