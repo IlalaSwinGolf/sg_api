@@ -5,12 +5,33 @@ const should = chai.should();
 const chaiHttp = require('chai-http');
 const server = require('../bin/www');
 const APIVersion = require('../api_version')();
-
+const config = require('../knexfile')[process.env.NODE_ENV];
+const knex = require('knex')(config);
 
 
 chai.use(chaiHttp);
+beforeEach(function(done) {
+    knex.migrate.rollback()
+        .then(function() {
+            knex.migrate.latest()
+                .then(function() {
+                    return knex.seed.run()
+                        .then(function() {
+                            done();
+                        });
+                });
+        });
+});
 
-describe('API Routes', function() {
+afterEach(function(done) {
+    knex.migrate.rollback()
+        .then(function() {
+            done();
+        });
+});
+
+describe('Roles routes', function() {
+
     it('should return all roles', function(done) {
         chai.request(server)
             .get('/api/' + APIVersion + '/roles')

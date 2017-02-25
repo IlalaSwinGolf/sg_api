@@ -5,7 +5,7 @@ const Role = require('../models/role');
 
 module.exports = {
 
-    getRoles: (req, res, next) => {
+    fetchAll: (req, res, next) => {
         roleCollection.forge()
             .fetch()
             .then(function(collection) {
