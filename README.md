@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/IlalaSwinGolf/sg_api.svg?branch=master)](https://travis-ci.org/IlalaSwinGolf/sg_api)
 # Swin-Golf scorecard api
 
 ## Getting Started
