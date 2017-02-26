@@ -21,7 +21,7 @@ describe('User routes', function() {
     before(function(done) {
         knex.migrate.rollback()
             .then(function() {
-                knex.migrate.latest()
+                return knex.migrate.latest()
                     .then(function() {
                         return knex.seed.run()
                             .then(function() {
@@ -43,16 +43,19 @@ describe('User routes', function() {
             .post('/api/' + APIVersion + '/users')
             .send(user)
             .end(function(err, res) {
-                res.should.have.status(200);
+                res.should.have.status(201);
                 res.should.be.json;
+                res.body.data.should.have.property('id');
                 res.body.data.should.have.property('login');
                 res.body.data.login.should.equal(user.login);
                 res.body.data.should.have.property('email');
                 res.body.data.email.should.equal(user.email);
-                res.body.data.should.have.property('password');
-                res.body.data.password.should.equal(user.password);
                 res.body.data.should.have.property('disabled');
                 res.body.data.disabled.should.equal(false);
+                res.body.data.should.have.property('role');
+                res.body.data.role.status.should.equal("root");
+                res.body.data.should.not.have.property('password');
+                res.body.data.should.not.have.property('role_id');
                 done();
 
             });
@@ -68,26 +71,4 @@ describe('User routes', function() {
                 done();
             });
     });
-    it('should return users informations', function(done) {
-        chai.request(server)
-            .get('/api/' + APIVersion + '/users/1')
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.body.data.should.have.property('login');
-                res.body.data.should.have.property('email');
-                res.body.data.should.have.property('password');
-                res.body.data.should.have.property('disabled');
-                done();
-            });
-    });
-    it('should return meta informations', function(done) {
-        chai.request(server)
-            .get('/api/' + APIVersion + '/users/1')
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.body.data.should.have.property('role');
-                done();
-            });
-    });
-
 });

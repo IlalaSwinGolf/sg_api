@@ -1,9 +1,11 @@
 'use strict';
 
 const bookshelf = require('../bookshelf');
-const User = bookshelf.Model.extend({
+const BaseModel = require('../helpers/base_model');
+
+const User = BaseModel.extend({
     tableName: 'users',
-    hasTimestamps: true,
+    hidden: ['password', 'role_id'],
     role: function() {
         return this.belongsTo('Role', 'role_id');
     },

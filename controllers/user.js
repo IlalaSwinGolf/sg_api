@@ -6,8 +6,7 @@ const User = require('../models/user');
 module.exports = {
 
     fetchAll: (req, res, next) => {
-        userCollection.forge()
-            .fetch({
+        User.findAll(req.query, {
                 withRelated: ['role']
             })
             .then(function(collection) {
@@ -23,11 +22,10 @@ module.exports = {
                 });
             });
     },
-    fetchOne: (req, res, next) => {
-        User.forge({
+    fetch: (req, res, next) => {
+        User.findOne({
                 id: req.params.id
-            })
-            .fetch({
+            }, {
                 withRelated: ['role']
             })
             .then(function(user) {
@@ -43,17 +41,21 @@ module.exports = {
                 });
             });
     },
-    add: (req, res, next) => {
-        User.forge(Object.assign(req.body, {
-                disabled: false
-            }))
-            .save()
-            .then(function(user) {
-                res.json({
-                    "error": false,
-                    "data": user
+    create: (req, res, next) => {
+        User.create(req.body, {})
+            .then(function(savedUser) {
+                User.findOne({
+                        id: savedUser.id
+                    }, {
+                        withRelated: ['role']
+                    })
+                    .then(function(user) {
+                        res.status(201).json({
+                            "error": false,
+                            "data": user
+                        });
+                    })
 
-                });
             })
             .catch(function(err) {
                 res.status(500).json({

@@ -15,7 +15,7 @@ describe('Roles routes', function() {
     before(function(done) {
         knex.migrate.rollback()
             .then(function() {
-                knex.migrate.latest()
+                return knex.migrate.latest()
                     .then(function() {
                         return knex.seed.run()
                             .then(function() {
@@ -49,31 +49,31 @@ describe('Roles routes', function() {
         chai.request(server)
             .post('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                res.should.have.status(403);
+                res.should.have.status(405);
                 done();
             });
     });
-    it('should return a 403 HTTP response on put', function(done) {
+    it('should return a 405 HTTP response on put', function(done) {
         chai.request(server)
             .put('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                res.should.have.status(403);
+                res.should.have.status(405);
                 done();
             });
     });
-    it('should return a 403 HTTP response on delete', function(done) {
+    it('should return a 405 HTTP response on delete', function(done) {
         chai.request(server)
             .delete('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                res.should.have.status(403);
+                res.should.have.status(405);
                 done();
             });
     });
-    it('should return a 403 HTTP response on get single role', function(done) {
+    it('should return a 405 HTTP response on get single role', function(done) {
         chai.request(server)
             .get('/api/' + APIVersion + '/roles/1')
             .end(function(err, res) {
-                res.should.have.status(403);
+                res.should.have.status(405);
                 done();
             });
     });
