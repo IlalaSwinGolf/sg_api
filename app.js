@@ -1,18 +1,30 @@
 'use strict';
 
-const express = require('express');
-const logger = require('morgan');
-const bodyParser = require('body-parser');
-const router = require('./router');
+const Express = require('express');
+const Logger = require('morgan');
+const BodyParser = require('body-parser');
+const Router = require('./router');
+const Passport = require('passport');
+const ConfigurePassport = require('./config/passport-jwt-config');
+const DevError = require('./middlewares/dev-error-handler');
+const ProdError = require('./middlewares/prod-error-handler');
 
-const app = express();
 
-app.use(logger(process.env.LOG_LEVEL || 'dev'));
+const App = Express();
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
+App.use(Logger(process.env.LOG_LEVEL || 'dev'));
+App.use(Passport.initialize());
+ConfigurePassport();
+App.use(BodyParser.json());
+App.use(BodyParser.urlencoded({
     extended: false
 }));
 
-router(app);
-module.exports = app;
+Router(App);
+
+if (App.get('env') === 'development') {
+  App.use(DevError.handler);
+}
+App.use(ProdError.handler);
+
+module.exports = App;
