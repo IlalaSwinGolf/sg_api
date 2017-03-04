@@ -1,8 +1,8 @@
 'use strict';
 
-const bookshelf = require('../bookshelf');
+const Bookshelf = require('../bookshelf');
 
-const model = bookshelf.Model.extend({
+const Model = Bookshelf.Model.extend({
     hasTimestamps: true,
 }, {
     findAll: function(filter, options) {
@@ -18,4 +18,4 @@ const model = bookshelf.Model.extend({
     },
 });
 
-module.exports = bookshelf.model('BaseModel', model);
+module.exports = Bookshelf.model('BaseModel', Model);
