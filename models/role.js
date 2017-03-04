@@ -1,7 +1,7 @@
 'use strict';
 
-const bookshelf = require('../bookshelf');
-const BaseModel = require('../helpers/base_model');
+const Bookshelf = require('../bookshelf');
+const BaseModel = require('../helpers/base-model');
 
 const Role = BaseModel.extend({
     tableName: 'roles',
@@ -10,4 +10,4 @@ const Role = BaseModel.extend({
     },
 });
 
-module.exports = bookshelf.model('Role', Role);
+module.exports = Bookshelf.model('Role', Role);

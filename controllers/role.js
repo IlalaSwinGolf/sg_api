@@ -1,29 +1,47 @@
 'use strict';
 
-const roleCollection = require('../collections/role');
+const Promise = require('bluebird')
 const Role = require('../models/role');
+const CustomErrors = require('../helpers/custom-errors');
 
 module.exports = {
 
     fetchAll: (req, res, next) => {
-        Role.findAll(req.query, {})
-        .then(function(collection) {
+        Promise.coroutine(function*() {
+            try {
+                const roles = yield Role.findAll(req.query, {});
                 res.status(200).json({
-                    "error": false,
-                    data: collection
+                    success: true,
+                    data: roles
                 });
-            })
-            .catch(function(err) {
-                res.status(500).json({
-                    "error": true,
-                    "message": err.message
-                });
-            });
+            } catch (err) {
+                if (err instanceof CustomErrors.genericError) {
+                    next(err);
+                } else {
+                    next(new CustomErrors.applicationError(500, err.message));
+                };
+            }
+        })();
     },
-    forbidden: (req, res, next) => {
-        res.status(405).json({
-            "error": true,
-            "message": req.method + " is not allowed with " + req.url + " url"
-        });
+    fetchUsers: (req, res, next) => {
+        Promise.coroutine(function*() {
+            try {
+                const roles = yield Role.findOne({
+                    id: req.params.id
+                }, {
+                    withRelated: ['users']
+                });
+                res.status(200).json({
+                    success: true,
+                    data: roles
+                });
+            } catch (err) {
+                if (err instanceof CustomErrors.genericError) {
+                    next(err);
+                } else {
+                    next(new CustomErrors.applicationError(500, err.message));
+                }
+            }
+        })();
     }
 }
