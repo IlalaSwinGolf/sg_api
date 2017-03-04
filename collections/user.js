@@ -1,7 +1,7 @@
-const user = require('../models/user');
-const bookshelf = require('../bookshelf');
+const User = require('../models/user');
+const Bookshelf = require('../bookshelf');
 
-const userCollection = bookshelf.Collection.extend({
-    model: user
+const UserCollection = Bookshelf.Collection.extend({
+    model: User
 });
-module.exports = userCollection;
+module.exports = UserCollection;

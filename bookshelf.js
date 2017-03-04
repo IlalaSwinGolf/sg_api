@@ -1,10 +1,9 @@
 'use strict';
-const config = require('./knexfile')[process.env.NODE_ENV];
-const knex = require('knex')(config);
+const Config = require('./knexfile')[process.env.NODE_ENV];
+const Knex = require('knex')(Config);
+const Bookshelf = require('bookshelf')(Knex);
 
-const bookshelf = require('bookshelf')(knex);
+Bookshelf.plugin('registry');
+Bookshelf.plugin('visibility');
 
-bookshelf.plugin('registry');
-bookshelf.plugin('visibility');
-
-module.exports = bookshelf;
+module.exports = Bookshelf;
