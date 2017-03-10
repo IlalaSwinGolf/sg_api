@@ -54,7 +54,6 @@ describe('Authentication', function() {
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(correctUser)
                 .end(function(err, res) {
-                    console.log(res);
                     res.should.have.status(201);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -79,7 +78,6 @@ describe('Authentication', function() {
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(nonUniqueUsernameUser)
                 .end(function(err, res) {
-                    console.log(res);
                     res.should.have.status(422);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -97,7 +95,6 @@ describe('Authentication', function() {
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(nonUniqueEmailUser)
                 .end(function(err, res) {
-                    console.log(res);
                     res.should.have.status(422);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -120,7 +117,6 @@ describe('Authentication', function() {
                 .post('/api/' + APIVersion + '/auth/signin')
                 .send({username: correctUser.username, password: correctUser.password})
                 .end(function(err, res) {
-                    console.log(res);
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -134,7 +130,6 @@ describe('Authentication', function() {
                 .post('/api/' + APIVersion + '/auth/signin')
                 .send({username: correctUser.username, password: "Wrong password"})
                 .end(function(err, res) {
-                    console.log(res);
                     res.should.have.status(401);
                     res.should.be.json;
                     res.body.should.have.property('success');
