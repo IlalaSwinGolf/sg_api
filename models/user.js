@@ -6,7 +6,6 @@ const Bcrypt = Promise.promisifyAll(require('bcrypt'));
 const BaseModel = require('../helpers/base-model');
 const SecurityConfig = require('../config/security-config');
 const CustomErrors = require('../helpers/custom-errors');
-const ErrorsLabels = require('../helpers/errors-labels');
 
 const User = BaseModel.extend({
 
@@ -23,7 +22,7 @@ const User = BaseModel.extend({
                 username: model.attributes.username
             }, {});
             if (user) {
-                throw new CustomErrors.duplicateEntryError(422, ErrorsLabels.nonUniqueUsername);
+                throw new CustomErrors.duplicateEntryError(422, CustomErrors.messages.nonUniqueUsername);
             }
         })();
     },
@@ -34,7 +33,7 @@ const User = BaseModel.extend({
                 email: model.attributes.email
             }, {});
             if (user) {
-                throw new CustomErrors.duplicateEntryError(422, ErrorsLabels.nonUniqueEmail);
+                throw new CustomErrors.duplicateEntryError(422, CustomErrors.messages.nonUniqueEmail);
             }
         })();
     },

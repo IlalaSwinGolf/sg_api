@@ -21,7 +21,7 @@ describe('Roles routes', function() {
     });
 
 
-    it('should return all roles', function(done) {
+    it('should return a 405 HTTP response on get', function(done) {
         chai.request(server)
             .get('/api/' + APIVersion + '/roles')
             .end(function(err, res) {
@@ -32,25 +32,9 @@ describe('Roles routes', function() {
                 done();
             });
     });
-    it('should return a role with users', function(done) {
-        chai.request(server)
-            .get('/api/' + APIVersion + '/roles/1/users')
-            .end(function(err, res) {
-                res.should.have.status(200);
-                res.should.be.json;
-                res.body.data.should.have.property('id');
-                res.body.data.id.should.equal(1);
-                res.body.data.should.have.property('status');
-                res.body.data.status.should.equal('root');
-                res.body.data.should.have.property('users');
-                res.body.data.users.should.be.a('array');
-                res.body.data.users.length.should.equal(4);
-                done();
-            });
-    });
     it('should return a 405 HTTP response on post', function(done) {
         chai.request(server)
-            .post('/api/' + APIVersion + '/roles/1')
+            .post('/api/' + APIVersion + '/roles')
             .end(function(err, res) {
                 res.should.have.status(405);
                 done();

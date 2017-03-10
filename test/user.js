@@ -8,7 +8,6 @@ const APIVersion = require('../api_version')();
 const config = require('../knexfile')[process.env.NODE_ENV];
 const knex = require('knex')(config);
 const TestHelper = require('../helpers/test');
-const ErrorsLabels = require('../helpers/errors-labels');
 
 chai.use(chaiHttp);
 
@@ -57,7 +56,8 @@ describe('Fetch user', function() {
                 res.body.data.should.have.property('disabled');
                 res.body.data.disabled.should.equal(false);
                 res.body.data.should.have.property('role');
-                res.body.data.role.status.should.equal("root");
+                res.body.data.role.should.have.property('authority');
+                res.body.data.role.authority.should.equal("root");
                 res.body.data.should.not.have.property('password');
                 res.body.data.should.not.have.property('role_id');
                 done();

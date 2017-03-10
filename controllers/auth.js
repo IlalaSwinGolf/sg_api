@@ -5,7 +5,6 @@ const Promise = require('bluebird');
 const Jwt = require('jwt-simple');
 const SecurityConfig = require('../config/security-config');
 const CustomErrors = require('../helpers/custom-errors');
-const ErrorsLabels = require('../helpers/errors-labels');
 
 module.exports = {
     signup: (req, res, next) => {
@@ -46,7 +45,7 @@ module.exports = {
                         token: `${token}`
                     });
                 } else {
-                    next(new CustomErrors.wrongPasswordError(401, ErrorsLabels.wrongPassword));
+                    next(new CustomErrors.authenticationError(401, CustomErrors.messages.wrongPassword));
                 }
             } catch (err) {
                 if (err instanceof CustomErrors.genericError) {

@@ -8,7 +8,7 @@ const APIVersion = require('../api_version')();
 const config = require('../knexfile')[process.env.NODE_ENV];
 const knex = require('knex')(config);
 const TestHelper = require('../helpers/test');
-const ErrorsLabels = require('../helpers/errors-labels');
+const CustomErrors = require('../helpers/custom-errors');
 
 const correctUser = {
     username: 'username_test',
@@ -67,7 +67,8 @@ describe('Authentication', function() {
                     res.body.data.should.have.property('disabled');
                     res.body.data.disabled.should.equal(false);
                     res.body.data.should.have.property('role');
-                    res.body.data.role.status.should.equal("root");
+                    res.body.data.role.should.have.property('authority');
+                    res.body.data.role.authority.should.equal("root");
                     res.body.data.should.not.have.property('password');
                     res.body.data.should.not.have.property('role_id');
                     done();
@@ -83,9 +84,9 @@ describe('Authentication', function() {
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
                     res.body.should.have.property('type');
-                    res.body.type.should.equal(ErrorsLabels.duplicateEntryError);
+                    res.body.type.should.equal(CustomErrors.types.duplicateEntryError);
                     res.body.should.have.property('message');
-                    res.body.message.should.equal(ErrorsLabels.nonUniqueUsername);
+                    res.body.message.should.equal(CustomErrors.messages.nonUniqueUsername);
                     done();
                 });
         });
@@ -100,9 +101,9 @@ describe('Authentication', function() {
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
                     res.body.should.have.property('type');
-                    res.body.type.should.equal(ErrorsLabels.duplicateEntryError);
+                    res.body.type.should.equal(CustomErrors.types.duplicateEntryError);
                     res.body.should.have.property('message');
-                    res.body.message.should.equal(ErrorsLabels.nonUniqueEmail);
+                    res.body.message.should.equal(CustomErrors.messages.nonUniqueEmail);
                     done();
                 });
 
@@ -135,9 +136,9 @@ describe('Authentication', function() {
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
                     res.body.should.have.property('type');
-                    res.body.type.should.equal(ErrorsLabels.wrongPasswordError);
+                    res.body.type.should.equal(CustomErrors.types.authenticationError);
                     res.body.should.have.property('message');
-                    res.body.message.should.equal(ErrorsLabels.wrongPassword);
+                    res.body.message.should.equal(CustomErrors.messages.wrongPassword);
                     done();
                 });
         });

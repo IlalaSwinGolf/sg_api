@@ -22,26 +22,5 @@ module.exports = {
                 };
             }
         })();
-    },
-    fetchUsers: (req, res, next) => {
-        Promise.coroutine(function*() {
-            try {
-                const roles = yield Role.findOne({
-                    id: req.params.id
-                }, {
-                    withRelated: ['users']
-                });
-                res.status(200).json({
-                    success: true,
-                    data: roles
-                });
-            } catch (err) {
-                if (err instanceof CustomErrors.genericError) {
-                    next(err);
-                } else {
-                    next(new CustomErrors.applicationError(500, err.message));
-                }
-            }
-        })();
     }
 }
