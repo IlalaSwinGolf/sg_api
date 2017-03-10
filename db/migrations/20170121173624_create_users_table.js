@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
         table.string('username').unique().notNullable();
         table.string('email').unique().notNullable();
         table.string('password').notNullable();
-        table.boolean('disabled').defaultTo(false);
+        table.boolean('disabled').defaultTo(true);
         table.timestamps();
     });
 };
