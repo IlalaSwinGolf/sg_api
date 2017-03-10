@@ -31,6 +31,14 @@ const nonUniqueUsernameUser = {
     role_id: 1
 };
 
+const nonDisabledUser = {
+    username: 'non_disabled_user',
+    email: 'non_disabled_user',
+    password: 'password_test',
+    role_id: 1,
+    disabled: false
+};
+
 
 chai.use(chaiHttp);
 
@@ -65,7 +73,7 @@ describe('Authentication', function() {
                     res.body.data.should.have.property('email');
                     res.body.data.email.should.equal('email_test');
                     res.body.data.should.have.property('disabled');
-                    res.body.data.disabled.should.equal(false);
+                    res.body.data.disabled.should.equal(true);
                     res.body.data.should.have.property('role');
                     res.body.data.role.should.have.property('authority');
                     res.body.data.role.authority.should.equal("root");
@@ -108,6 +116,25 @@ describe('Authentication', function() {
                 });
 
         });
+        it('should failed to create an user because disabled property is set to true', function(done) {
+
+            chai.request(server)
+                .post('/api/' + APIVersion + '/auth/signup')
+                .send(nonDisabledUser)
+                .end(function(err, res) {
+                    res.should.have.status(422);
+                    res.should.be.json;
+                    res.body.should.have.property('success');
+                    res.body.success.should.equal(false);
+                    res.body.should.have.property('type');
+                    res.body.type.should.equal(CustomErrors.types.forbiddenActionError);
+                    res.body.should.have.property('message');
+                    res.body.message.should.equal(CustomErrors.messages.nonDisabledUserOnCreation);
+                    done();
+                });
+
+        });
+
 
     });
 
@@ -116,7 +143,10 @@ describe('Authentication', function() {
         it('should send a JWT token', function(done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signin')
-                .send({username: correctUser.username, password: correctUser.password})
+                .send({
+                    username: correctUser.username,
+                    password: correctUser.password
+                })
                 .end(function(err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
@@ -129,7 +159,10 @@ describe('Authentication', function() {
         it('should send a 401 status with wrong password error', function(done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signin')
-                .send({username: correctUser.username, password: "Wrong password"})
+                .send({
+                    username: correctUser.username,
+                    password: "Wrong password"
+                })
                 .end(function(err, res) {
                     res.should.have.status(401);
                     res.should.be.json;

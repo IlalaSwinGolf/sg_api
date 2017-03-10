@@ -22,16 +22,24 @@ const CustomErrors = {
         CustomErrors.genericError.call(this, status, message);
         this.name = CustomErrors.types.routeError;
     },
+    forbiddenActionError: function(status, message) {
+        CustomErrors.genericError.call(this, status, message);
+        this.name = CustomErrors.types.forbiddenActionError;
+    },
     types: {
         applicationError: "Application error",
         duplicateEntryError: "Duplicate entry error",
         authenticationError: "Authentication error",
         routeError: "Route error",
+        forbiddenActionError: "Forbbiden action error"
     },
     messages: {
         nonUniqueEmail: "Email is already used.",
         nonUniqueUsername: "Username is already used.",
         wrongPassword: "Password does not match with username",
+        nonDisabledUserOnCreation: "A created user could not be enabled.",
+        tooLowAuthority: "Your account has not sufficient authority.",
+        nonDisabledUserOnCreation: "You can't create a non-disabled user.",
     },
 };
 CustomErrors.genericError.prototype = new Error;
@@ -39,5 +47,6 @@ CustomErrors.applicationError.prototype = new CustomErrors.genericError;
 CustomErrors.duplicateEntryError.prototype = new CustomErrors.genericError;
 CustomErrors.authenticationError.prototype = new CustomErrors.genericError;
 CustomErrors.routeError.prototype = new CustomErrors.genericError;
+CustomErrors.forbiddenActionError.prototype = new CustomErrors.genericError;
 
 module.exports = CustomErrors;

@@ -37,6 +37,12 @@ const User = BaseModel.extend({
             }
         })();
     },
+    assertDisabledFalse: function(model, attrs, options) {
+        if (!model.hasChanged('disabled')) return;
+        if (model.attributes.disabled == false) {
+            throw new CustomErrors.forbiddenActionError(422, CustomErrors.messages.nonDisabledUserOnCreation);
+        }
+    },
     validPassword(password) {
         return Bcrypt.compareAsync(password, this.attributes.password);
     },
@@ -49,6 +55,8 @@ const User = BaseModel.extend({
         })();
     },
     initialize() {
+        this.on('creating', this.assertDisabledFalse);
+        // this.on('creating', this.assertRoleUser);
         this.on('creating', this.assertUsernameUnique);
         this.on('creating', this.assertEmailUnique);
         this.on('creating', this.hashPassword);
