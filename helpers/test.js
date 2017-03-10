@@ -9,7 +9,7 @@ const TestHelper = {
     tables: ['roles', 'users'],
     truncate: function() {
         return Promise.each(TestHelper.tables, function(table) {
-            return knex.raw('truncate table ' + table + ' cascade');
+            return knex.raw('TRUNCATE table ' + table + ' RESTART IDENTITY CASCADE')
         });
     },
     seed: function() {
