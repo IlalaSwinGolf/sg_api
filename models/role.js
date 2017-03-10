@@ -1,8 +1,13 @@
 'use strict';
 
-const bookshelf = require('../bookshelf');
-const Role = bookshelf.Model.extend({
+const Bookshelf = require('../bookshelf');
+const BaseModel = require('../helpers/base-model');
+
+const Role = BaseModel.extend({
     tableName: 'roles',
+    users: function() {
+        return this.hasMany('User', 'role_id');
+    },
 });
 
-module.exports = bookshelf.model('Role', Role);
+module.exports = Bookshelf.model('Role', Role);

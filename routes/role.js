@@ -1,10 +1,10 @@
 'use strict';
 
-const express = require('express');
-const roleController = require('../controllers/role');
-const apiRoutes = express.Router();
+const Express = require('express');
+const RoleController = require('../controllers/role');
+const ApiRoutes = Express.Router();
 
-apiRoutes.get('/', roleController.getRoles);
-apiRoutes.all('*', roleController.forbidden);
+ApiRoutes.get('/', RoleController.fetchAll);
+ApiRoutes.get('/:id/users', RoleController.fetchUsers);
 
-module.exports = apiRoutes;
+module.exports = ApiRoutes;

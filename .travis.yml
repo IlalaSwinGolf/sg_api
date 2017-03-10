@@ -3,7 +3,10 @@ language: node_js
 node_js:
   - "6.9.4"
 env:
-- NODE_ENV=test
+  global:
+    - NODE_ENV=test
+  matrix: 
+    - TRAVIS=travis CXX=g++-4.8
 cache:
   directories:
     - node_modules  
@@ -11,6 +14,11 @@ services:
   - postgresql
 addons:
   postgresql: "9.6"
+  apt: 
+    sources: 
+    - ubuntu-toolchain-r-test 
+    packages: 
+    - g++-4.8
 before_install:
   - psql --version
   - sudo /etc/init.d/postgresql stop
@@ -29,5 +37,3 @@ before_install:
 before_script:
   - createuser -U postgres -s travis
   - psql -c 'create database sg_db_test;' -U postgres
-  - knex migrate:latest --env test
-  - knex seed:run --env test

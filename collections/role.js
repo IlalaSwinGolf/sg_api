@@ -1,7 +1,9 @@
-const role = require('../models/role');
-const bookshelf = require('../bookshelf');
+'use strict';
 
-const roleCollection = bookshelf.Collection.extend({
-    model: role
+const Role = require('../models/role');
+const Bookshelf = require('../bookshelf');
+
+const RoleCollection = Bookshelf.Collection.extend({
+    model: Role
 });
-module.exports = roleCollection;
+module.exports = RoleCollection;
