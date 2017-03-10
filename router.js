@@ -1,3 +1,5 @@
+'use strict';
+
 const Express = require('express');
 const RoleRoutes = require ('./routes/role');
 const UserRoutes = require ('./routes/user');

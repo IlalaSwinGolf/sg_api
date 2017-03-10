@@ -1,3 +1,4 @@
+'use strict';
 
 const ErrorsLabels = {
     nonUniqueEmail : "Email is already used.",

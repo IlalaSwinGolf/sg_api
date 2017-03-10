@@ -1,3 +1,5 @@
+'use strict';
+
 exports.up = function(knex, Promise) {
     return knex.schema.createTableIfNotExists('roles', function(table) {
         table.increments('id').unsigned().primary();

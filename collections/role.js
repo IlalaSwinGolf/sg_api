@@ -1,3 +1,5 @@
+'use strict';
+
 const Role = require('../models/role');
 const Bookshelf = require('../bookshelf');
 

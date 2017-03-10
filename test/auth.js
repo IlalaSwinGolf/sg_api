@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test';
+'use strict';
 
 const chai = require('chai');
 const should = chai.should();

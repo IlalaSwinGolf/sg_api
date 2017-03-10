@@ -1,4 +1,5 @@
 'use strict';
+
 const Promise = require('bluebird');
 const User = require('../models/user');
 const CustomErrors = require('../helpers/custom-errors');

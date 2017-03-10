@@ -1,3 +1,5 @@
+'use strict';
+
 const ErrorsLabels = require('./errors-labels');
 
 const CustomErrors = {

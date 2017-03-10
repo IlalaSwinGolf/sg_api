@@ -1,3 +1,5 @@
+'use strict';
+
 const User = require('../../../models/user');
 
 exports.seed = function(knex, Promise) {
