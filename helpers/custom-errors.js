@@ -1,7 +1,5 @@
 'use strict';
 
-const ErrorsLabels = require('./errors-labels');
-
 const CustomErrors = {
     genericError: function(status, message) {
         this.status = status;
@@ -9,26 +7,37 @@ const CustomErrors = {
         this.stack = (new Error()).stack;
     },
     applicationError: function(status, message) {
-    	CustomErrors.genericError.call(this, status, message);
-        this.name = ErrorsLabels.applicationError;
+        CustomErrors.genericError.call(this, status, message);
+        this.name = CustomErrors.types.applicationError;
     },
     duplicateEntryError: function(status, message) {
-    	CustomErrors.genericError.call(this, status, message);
-        this.name = ErrorsLabels.duplicateEntryError;
+        CustomErrors.genericError.call(this, status, message);
+        this.name = CustomErrors.types.duplicateEntryError;
     },
-    wrongPasswordError: function(status, message) {
-    	CustomErrors.genericError.call(this, status, message);
-        this.name = ErrorsLabels.wrongPasswordError;
+    authenticationError: function(status, message) {
+        CustomErrors.genericError.call(this, status, message);
+        this.name = CustomErrors.types.authenticationError;
     },
     routeError: function(status, message) {
-    	CustomErrors.genericError.call(this, status, message);
-        this.name = ErrorsLabels.routeError;
+        CustomErrors.genericError.call(this, status, message);
+        this.name = CustomErrors.types.routeError;
+    },
+    types: {
+        applicationError: "Application error",
+        duplicateEntryError: "Duplicate entry error",
+        authenticationError: "Authentication error",
+        routeError: "Route error",
+    },
+    messages: {
+        nonUniqueEmail: "Email is already used.",
+        nonUniqueUsername: "Username is already used.",
+        wrongPassword: "Password does not match with username",
     },
 };
 CustomErrors.genericError.prototype = new Error;
 CustomErrors.applicationError.prototype = new CustomErrors.genericError;
 CustomErrors.duplicateEntryError.prototype = new CustomErrors.genericError;
-CustomErrors.wrongPasswordError.prototype = new CustomErrors.genericError;
+CustomErrors.authenticationError.prototype = new CustomErrors.genericError;
 CustomErrors.routeError.prototype = new CustomErrors.genericError;
 
 module.exports = CustomErrors;
