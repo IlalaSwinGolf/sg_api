@@ -52,7 +52,7 @@ describe('Fetch user', function() {
                 res.body.data.should.have.property('username');
                 res.body.data.username.should.equal('flocateur');
                 res.body.data.should.have.property('email');
-                res.body.data.email.should.equal('flocateur@gmail.com');
+                res.body.data.email.should.equal('fleprovost@gmail.com');
                 res.body.data.should.have.property('disabled');
                 res.body.data.disabled.should.equal(true);
                 res.body.data.should.have.property('role');
