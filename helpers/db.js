@@ -5,17 +5,14 @@ const knex = require('knex')(config);
 const Promise = require('bluebird');
 
 
-const TestHelper = {
-    tables: ['roles', 'users'],
+const DBHelper = {
+    tables: ['roles'],
     truncate: function() {
-        return Promise.each(TestHelper.tables, function(table) {
+        return Promise.each(DBHelper.tables, function(table) {
             return knex.raw('TRUNCATE table ' + table + ' RESTART IDENTITY CASCADE')
         });
     },
     seed: function() {
-        return knex.seed.run();
-    },
-    migrate: function() {
         return knex.seed.run();
     },
     rollback: function() {
@@ -26,4 +23,4 @@ const TestHelper = {
     }
 };
 
-module.exports = TestHelper;
+module.exports = DBHelper;
