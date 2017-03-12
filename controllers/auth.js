@@ -10,6 +10,7 @@ module.exports = {
     signup: (req, res, next) => {
         Promise.coroutine(function*() {
             try {
+                if ("role_id" in req.body || "disabled" in req.body) throw new CustomErrors.forbiddenActionError(403, CustomErrors.messages.tooLowAuthority);
                 let user = yield User.create(req.body, {});
                 user = yield User.findOne({
                     id: user.id

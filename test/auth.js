@@ -14,29 +14,32 @@ const correctUser = {
     username: 'username_test',
     email: 'email_test',
     password: 'password_test',
-    role_id: 1
 };
 
 const nonUniqueEmailUser = {
     username: 'username',
     email: 'email_test',
     password: 'password_test',
-    role_id: 1
 };
 
 const nonUniqueUsernameUser = {
     username: 'username_test',
     email: 'email',
     password: 'password_test',
-    role_id: 1
 };
 
 const nonDisabledUser = {
     username: 'non_disabled_user',
     email: 'non_disabled_user',
     password: 'password_test',
-    role_id: 1,
     disabled: false
+};
+
+const badAuthorityUser = {
+    username: 'non_disabled_user',
+    email: 'non_disabled_user',
+    password: 'password_test',
+    role_id: 1
 };
 
 
@@ -76,7 +79,7 @@ describe('Authentication', function() {
                     res.body.data.disabled.should.equal(true);
                     res.body.data.should.have.property('role');
                     res.body.data.role.should.have.property('authority');
-                    res.body.data.role.authority.should.equal("root");
+                    res.body.data.role.authority.should.equal("user");
                     res.body.data.should.not.have.property('password');
                     res.body.data.should.not.have.property('role_id');
                     done();
@@ -116,20 +119,37 @@ describe('Authentication', function() {
                 });
 
         });
-        it('should failed to create an user because disabled property is set to true', function(done) {
+        it('should failed to create an user because disabled property is set', function(done) {
 
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(nonDisabledUser)
                 .end(function(err, res) {
-                    res.should.have.status(422);
+                    res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
                     res.body.should.have.property('type');
                     res.body.type.should.equal(CustomErrors.types.forbiddenActionError);
                     res.body.should.have.property('message');
-                    res.body.message.should.equal(CustomErrors.messages.nonDisabledUserOnCreation);
+                    res.body.message.should.equal(CustomErrors.messages.tooLowAuthority);
+                    done();
+                });
+
+        });
+            it('should failed to create an user because role_id property is set', function(done) {
+            chai.request(server)
+                .post('/api/' + APIVersion + '/auth/signup')
+                .send(badAuthorityUser)
+                .end(function(err, res) {
+                    res.should.have.status(403);
+                    res.should.be.json;
+                    res.body.should.have.property('success');
+                    res.body.success.should.equal(false);
+                    res.body.should.have.property('type');
+                    res.body.type.should.equal(CustomErrors.types.forbiddenActionError);
+                    res.body.should.have.property('message');
+                    res.body.message.should.equal(CustomErrors.messages.tooLowAuthority);
                     done();
                 });
 
