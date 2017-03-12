@@ -15,6 +15,15 @@ const User = BaseModel.extend({
     role: function() {
         return this.belongsTo('Role', 'role_id');
     },
+    hasRootAuthority: function(){
+        return this.related('roles').models.map(role => role.attributes.authority) == "root";
+    },
+    hasAdminAuthority: function (){
+        return this.related('roles').models.map(role => role.attributes.authority) == "admin";
+    },
+    hasUserAuthority: function (){
+        return this.related('roles').models.map(role => role.attributes.authority) == "user";
+    },
     assertUsernameIsUnique: function(model, attrs, options) {
         if (!model.hasChanged('username')) return;
         return Promise.coroutine(function*() {
@@ -37,12 +46,6 @@ const User = BaseModel.extend({
             }
         })();
     },
-    assertDisabledIsSetToFalse: function(model, attrs, options) {
-        if (!model.hasChanged('disabled')) return;
-        if (model.attributes.disabled == false) {
-            throw new CustomErrors.forbiddenActionError(422, CustomErrors.messages.nonDisabledUserOnCreation);
-        }
-    },
     validPassword(password) {
         return Bcrypt.compareAsync(password, this.attributes.password);
     },
@@ -55,7 +58,6 @@ const User = BaseModel.extend({
         })();
     },
     initialize() {
-        this.on('creating', this.assertDisabledIsSetToFalse);
         this.on('saving'  , this.assertUsernameIsUnique);
         this.on('saving'  , this.assertEmailIsUnique);
         this.on('saving'  , this.hashPassword);
