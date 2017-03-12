@@ -36,7 +36,7 @@ module.exports = {
         } = req.body;
         Promise.coroutine(function*() {
             try {
-                const user = yield User.where('username', username).fetch();
+                const user = yield User.findOne({'username': username},{});
                 const isValidPassword = yield user.validPassword(password);
                 if (isValidPassword) {
                     const token = Jwt.encode(user, SecurityConfig.jwtSecret);

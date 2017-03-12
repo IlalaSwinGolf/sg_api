@@ -7,7 +7,7 @@ const server = require('../bin/www');
 const APIVersion = require('../api_version')();
 const config = require('../knexfile')[process.env.NODE_ENV];
 const knex = require('knex')(config);
-const TestHelper = require('../helpers/test');
+const DBHelper = require('../helpers/db');
 const CustomErrors = require('../helpers/custom-errors');
 
 const correctUser = {
@@ -44,13 +44,13 @@ chai.use(chaiHttp);
 
 describe('Authentication', function() {
     before(function(done) {
-        TestHelper.migrate().then(TestHelper.truncate).then(TestHelper.seed).then(function() {
+        DBHelper.migrate().then(DBHelper.truncate).then(DBHelper.seed).then(function() {
             done();
         });
     });
 
     after(function(done) {
-        TestHelper.truncate().then(TestHelper.migrate).then(function() {
+        DBHelper.truncate().then(function() {
             done();
         });
     });
