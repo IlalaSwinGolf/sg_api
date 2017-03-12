@@ -56,13 +56,9 @@ const User = BaseModel.extend({
     },
     initialize() {
         this.on('creating', this.assertDisabledFalse);
-        // this.on('creating', this.assertRoleUser);
-        this.on('creating', this.assertUsernameUnique);
-        this.on('creating', this.assertEmailUnique);
-        this.on('creating', this.hashPassword);
-        this.on('saving', this.assertUsernameUnique);
-        this.on('saving', this.assertEmailUnique);
-        this.on('saving', this.hashPassword);
+        this.on('saving'  , this.assertUsernameUnique);
+        this.on('saving'  , this.assertEmailUnique);
+        this.on('saving'  , this.hashPassword);
     }
 });
 
