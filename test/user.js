@@ -96,8 +96,6 @@ describe('Update its own properties', function() {
                 username: 'fleprovost'
             })
             .end(function(err, res) {
-                console.log("Updated User");
-                console.log(res.body);
                 res.should.have.status(200);
                 res.should.be.json;
                 res.body.should.have.property('success');
