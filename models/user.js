@@ -15,7 +15,7 @@ const User = BaseModel.extend({
     role: function() {
         return this.belongsTo('Role', 'role_id');
     },
-    assertUsernameUnique: function(model, attrs, options) {
+    assertUsernameIsUnique: function(model, attrs, options) {
         if (!model.hasChanged('username')) return;
         return Promise.coroutine(function*() {
             const user = yield User.findOne({
@@ -26,7 +26,7 @@ const User = BaseModel.extend({
             }
         })();
     },
-    assertEmailUnique: function(model, attrs, options) {
+    assertEmailIsUnique: function(model, attrs, options) {
         if (!model.hasChanged('email')) return;
         return Promise.coroutine(function*() {
             const user = yield User.findOne({
@@ -37,7 +37,7 @@ const User = BaseModel.extend({
             }
         })();
     },
-    assertDisabledFalse: function(model, attrs, options) {
+    assertDisabledIsSetToFalse: function(model, attrs, options) {
         if (!model.hasChanged('disabled')) return;
         if (model.attributes.disabled == false) {
             throw new CustomErrors.forbiddenActionError(422, CustomErrors.messages.nonDisabledUserOnCreation);
@@ -55,9 +55,9 @@ const User = BaseModel.extend({
         })();
     },
     initialize() {
-        this.on('creating', this.assertDisabledFalse);
-        this.on('saving'  , this.assertUsernameUnique);
-        this.on('saving'  , this.assertEmailUnique);
+        this.on('creating', this.assertDisabledIsSetToFalse);
+        this.on('saving'  , this.assertUsernameIsUnique);
+        this.on('saving'  , this.assertEmailIsUnique);
         this.on('saving'  , this.hashPassword);
     }
 });
