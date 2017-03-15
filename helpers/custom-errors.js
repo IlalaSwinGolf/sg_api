@@ -1,34 +1,28 @@
 'use strict';
 
 const CustomErrors = {
-    genericError: function(status, message) {
+    genericError: function(status, message, name) {
         this.status = status;
         this.message = message;
-        this.stack = (new Error()).stack;
+        this.name = name;
     },
     applicationError: function(status, message) {
-        CustomErrors.genericError.call(this, status, message);
-        this.name = CustomErrors.types.applicationError;
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.applicationError);
     },
     duplicateEntryError: function(status, message) {
-        CustomErrors.genericError.call(this, status, message);
-        this.name = CustomErrors.types.duplicateEntryError;
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.duplicateEntryError);
     },
     authenticationError: function(status, message) {
-        CustomErrors.genericError.call(this, status, message);
-        this.name = CustomErrors.types.authenticationError;
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.authenticationError);
     },
     routeError: function(status, message) {
-        CustomErrors.genericError.call(this, status, message);
-        this.name = CustomErrors.types.routeError;
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.routeError);
     },
     forbiddenActionError: function(status, message) {
-        CustomErrors.genericError.call(this, status, message);
-        this.name = CustomErrors.types.forbiddenActionError;
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.forbiddenActionError);
     },
     modelNotFoundError: function(status, message) {
-        CustomErrors.genericError.call(this, status, message);
-        this.name = CustomErrors.types.modelNotFoundError;
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.modelNotFoundError);
     },
     types: {
         applicationError: "Application error",
@@ -41,20 +35,23 @@ const CustomErrors = {
     messages: {
         nonUniqueEmail: "Email is already used.",
         nonUniqueUsername: "Username is already used.",
-        wrongPassword: "Password does not match with username",
-        nonDisabledUserOnCreation: "A created user could not be enabled.",
+        wrongPassword: "Password does not match with username.",
         tooLowAuthority: "Your account has not sufficient authority.",
         nonDisabledUserOnCreation: "You can't create a non-disabled user.",
-        modelNotFoundError: "The requested ressource has not been found."
+        modelNotFoundError: "The requested ressource has not been found.",
+        roleDoesNotExists: "Role does not exists",
+        notAuthenticated: "You are not authenticated.",
+        userNotFound: "User not found.",
+        restrictedFields: "You can't update restricted fiels of an other user.",
     },
 };
-CustomErrors.genericError.prototype = new Error;
-CustomErrors.applicationError.prototype = new CustomErrors.genericError;
-CustomErrors.duplicateEntryError.prototype = new CustomErrors.genericError;
-CustomErrors.authenticationError.prototype = new CustomErrors.genericError;
-CustomErrors.routeError.prototype = new CustomErrors.genericError;
-CustomErrors.forbiddenActionError.prototype = new CustomErrors.genericError;
-CustomErrors.modelNotFoundError.prototype = new CustomErrors.modelNotFoundError;
+CustomErrors.genericError.prototype = Error.prototype;
+CustomErrors.applicationError.prototype = CustomErrors.genericError.prototype;
+CustomErrors.duplicateEntryError.prototype = CustomErrors.genericError.prototype;
+CustomErrors.authenticationError.prototype = CustomErrors.genericError.prototype;
+CustomErrors.routeError.prototype = CustomErrors.genericError.prototype;
+CustomErrors.forbiddenActionError.prototype = CustomErrors.genericError.prototype;
+CustomErrors.modelNotFoundError.prototype = CustomErrors.genericError.prototype;
 
 
 module.exports = CustomErrors;
