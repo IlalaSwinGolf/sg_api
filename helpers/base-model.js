@@ -19,17 +19,6 @@ const Model = Bookshelf.Model.extend({
     create: function(data, options) {
         return this.forge(data).save(null, options);
     },
-    update: function(query, fields, options) {
-        const that = this;
-        return Promise.coroutine(function*() {
-            let model = yield that.findOne({"id": parseInt(query.id)}, {});
-            if (model.id) {
-                return model.save(fields);
-            } else {
-                throw new CustomErrors.modelNotFOund(404, CustomErrors.messages.modelNotFound);
-            }
-        })();
-    },
 });
 
 module.exports = Bookshelf.model('BaseModel', Model);
