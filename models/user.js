@@ -12,17 +12,51 @@ const User = BaseModel.extend({
     tableName: 'users',
     hidden: ['password', 'role_id'],
 
+    update: function(currentUser, fields, options) {
+        if (currentUser.canUpdate(this, fields)) {
+            return this.save(fields, options);
+        }
+    },
+    canUpdate: function(userToUpdate, fields) {
+        return this.canUpdateRestrictedFields(userToUpdate, fields) && this.canDisableAnUser(fields) && this.canUpdateRole(fields);
+    },
+    canDisableAnUser: function(fields) {
+        if (fields.hasOwnProperty("disabled")) {
+            if (!this.isAtLeastAdmin()) {
+                throw new CustomErrors.forbiddenActionError(401, CustomErrors.messages.tooLowAuthority);
+            }
+        }
+        return true;
+    },
+    canUpdateRestrictedFields: function(userToUpdate, fields) {
+        if (this.id != userToUpdate.id && (fields.hasOwnProperty("username") || fields.hasOwnProperty("password") || fields.hasOwnProperty("email"))) {
+            throw new CustomErrors.forbiddenActionError(401, CustomErrors.messages.restrictedFields);
+        }
+        return true;
+    },
+    canUpdateRole: function(fields) {
+        if (fields.hasOwnProperty("role_id")) {
+            if (this.isAtLeastAdmin() && this.related('role').isPowerfull(role_id)) {
+                return true;
+            }
+            throw new CustomErrors.forbiddenActionError(401, CustomErrors.messages.tooLowAuthority);
+        }
+        return true;
+    },
+    isAtLeastAdmin: function() {
+        return this.hasAdminAuthority() || this.hasRootAuthority();
+    },
     role: function() {
         return this.belongsTo('Role', 'role_id');
     },
-    hasRootAuthority: function(){
-        return this.related('roles').models.map(role => role.attributes.authority) == "root";
+    hasRootAuthority: function() {
+        return this.related('role').authority == "root";
     },
-    hasAdminAuthority: function (){
-        return this.related('roles').models.map(role => role.attributes.authority) == "admin";
+    hasAdminAuthority: function() {
+        return this.related('role').authority == "admin";
     },
-    hasUserAuthority: function (){
-        return this.related('roles').models.map(role => role.attributes.authority) == "user";
+    hasUserAuthority: function() {
+        return this.related('role').authority == "user";
     },
     assertUsernameIsUnique: function(model, attrs, options) {
         if (!model.hasChanged('username')) return;
@@ -58,9 +92,9 @@ const User = BaseModel.extend({
         })();
     },
     initialize() {
-        this.on('saving'  , this.assertUsernameIsUnique);
-        this.on('saving'  , this.assertEmailIsUnique);
-        this.on('saving'  , this.hashPassword);
+        this.on('saving', this.assertUsernameIsUnique);
+        this.on('saving', this.assertEmailIsUnique);
+        this.on('saving', this.hashPassword);
     }
 });
 

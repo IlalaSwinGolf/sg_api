@@ -38,12 +38,13 @@ module.exports = {
         Promise.coroutine(function*() {
             try {
                 const user = yield User.findOne({'username': username},{});
+                if(!user) throw new CustomErrors.authenticationError(401, CustomErrors.messages.userNotFound);
                 const isValidPassword = yield user.validPassword(password);
                 if (isValidPassword) {
                     const token = Jwt.encode(user, SecurityConfig.jwtSecret);
                     res.status(200).json({
                         success: true,
-                        token: `${token}`
+                        token: `JWT ${token}`
                     });
                 } else {
                     next(new CustomErrors.authenticationError(401, CustomErrors.messages.wrongPassword));

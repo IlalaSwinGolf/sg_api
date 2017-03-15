@@ -94,8 +94,8 @@ describe('Authentication', function() {
                     res.should.be.json;
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
-                    res.body.should.have.property('type');
-                    res.body.type.should.equal(CustomErrors.types.duplicateEntryError);
+                    res.body.should.have.property('error');
+                    res.body.error.should.equal(CustomErrors.types.duplicateEntryError);
                     res.body.should.have.property('message');
                     res.body.message.should.equal(CustomErrors.messages.nonUniqueUsername);
                     done();
@@ -111,8 +111,8 @@ describe('Authentication', function() {
                     res.should.be.json;
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
-                    res.body.should.have.property('type');
-                    res.body.type.should.equal(CustomErrors.types.duplicateEntryError);
+                    res.body.should.have.property('error');
+                    res.body.error.should.equal(CustomErrors.types.duplicateEntryError);
                     res.body.should.have.property('message');
                     res.body.message.should.equal(CustomErrors.messages.nonUniqueEmail);
                     done();
@@ -129,8 +129,8 @@ describe('Authentication', function() {
                     res.should.be.json;
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
-                    res.body.should.have.property('type');
-                    res.body.type.should.equal(CustomErrors.types.forbiddenActionError);
+                    res.body.should.have.property('error');
+                    res.body.error.should.equal(CustomErrors.types.forbiddenActionError);
                     res.body.should.have.property('message');
                     res.body.message.should.equal(CustomErrors.messages.tooLowAuthority);
                     done();
@@ -146,8 +146,8 @@ describe('Authentication', function() {
                     res.should.be.json;
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
-                    res.body.should.have.property('type');
-                    res.body.type.should.equal(CustomErrors.types.forbiddenActionError);
+                    res.body.should.have.property('error');
+                    res.body.error.should.equal(CustomErrors.types.forbiddenActionError);
                     res.body.should.have.property('message');
                     res.body.message.should.equal(CustomErrors.messages.tooLowAuthority);
                     done();
@@ -188,8 +188,8 @@ describe('Authentication', function() {
                     res.should.be.json;
                     res.body.should.have.property('success');
                     res.body.success.should.equal(false);
-                    res.body.should.have.property('type');
-                    res.body.type.should.equal(CustomErrors.types.authenticationError);
+                    res.body.should.have.property('error');
+                    res.body.error.should.equal(CustomErrors.types.authenticationError);
                     res.body.should.have.property('message');
                     res.body.message.should.equal(CustomErrors.messages.wrongPassword);
                     done();
