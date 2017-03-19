@@ -50,13 +50,13 @@ const User = BaseModel.extend({
         return this.belongsTo('Role', 'role_id');
     },
     hasRootAuthority: function() {
-        return this.related('role').authority == "root";
+        return this.related('role').attributes.authority == "root";
     },
     hasAdminAuthority: function() {
-        return this.related('role').authority == "admin";
+        return this.related('role').attributes.authority == "admin";
     },
     hasUserAuthority: function() {
-        return this.related('role').authority == "user";
+        return this.related('role').attributes.authority == "user";
     },
     assertUsernameIsUnique: function(model, attrs, options) {
         if (!model.hasChanged('username')) return;
