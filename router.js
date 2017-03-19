@@ -7,7 +7,7 @@ const AuthRoutes = require ('./routes/auth');
 const APIVersion =  require ('./api_version')();
 const CustomErrors = require('./helpers/custom-errors');
 
-module.exports = function(app, passport) {
+module.exports = function(app) {
     const apiRoutes = Express.Router();
 
     apiRoutes.use('/roles', RoleRoutes);

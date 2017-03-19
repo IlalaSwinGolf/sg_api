@@ -18,7 +18,7 @@ App.use(BodyParser.urlencoded({
     extended: false
 }));
 
-Router(App, Passport);
+Router(App);
 
 App.use(ErrorHandler);
 
