@@ -42,7 +42,7 @@ const CustomErrors = {
         roleDoesNotExists: "Role does not exists",
         notAuthenticated: "You are not authenticated.",
         userNotFound: "User not found.",
-        restrictedFields: "You can't update restricted fiels of an other user.",
+        restrictedFields: "You can't update restricted fields of an other user.",
     },
 };
 CustomErrors.genericError.prototype = Error.prototype;

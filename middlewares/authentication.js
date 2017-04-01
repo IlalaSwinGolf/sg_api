@@ -6,9 +6,12 @@ module.exports = function(req, res, next) {
     passport.authenticate("jwt", {
         failWithError: true,
         session: false
-    }, function(err, user, info) {
+    }, function(err, user) {
+    	if (err){
+    	return next(new CustomErrors.authenticationError(401, err.message)) ;
+    	}
         if (!user){
-         return next(new CustomErrors.authenticationError(401,info.message)) ;
+         return next(new CustomErrors.authenticationError(401, CustomErrors.messages.userNotFound)) ;
         } else {
          req.user=user;
          return next();

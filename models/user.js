@@ -14,6 +14,9 @@ const User = BaseModel.extend({
 
     update: function(currentUser, fields, options) {
         if (currentUser.canUpdate(this, fields)) {
+            if (fields.hasOwnProperty("role_id")) {
+                fields.role_id = parseInt(fields.role_id);
+            }
             return this.save(fields, options);
         }
     },
@@ -36,7 +39,7 @@ const User = BaseModel.extend({
     },
     canUpdateRole: function(fields) {
         if (fields.hasOwnProperty("role_id")) {
-            if (this.isAtLeastAdmin() && this.related('role').isPowerfull(role_id)) {
+            if (this.isAtLeastAdmin() && this.related('role').isPowerfull(fields.role_id)) {
                 return true;
             }
             throw new CustomErrors.forbiddenActionError(401, CustomErrors.messages.tooLowAuthority);

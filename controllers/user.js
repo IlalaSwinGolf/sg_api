@@ -50,8 +50,8 @@ module.exports = {
                 let user = yield User.findOne({
                     "id": parseInt(req.params.id)
                 }, {});
-                if (user.id) {
-                    user = yield user.update(req.user, req.body, {
+                if (user) {
+                    user = yield user.update(req.user, JSON.parse(JSON.stringify(req.body)), {
                         patch: true, method: "update", require: true
                     });
                     res.status(200).json({
@@ -59,7 +59,7 @@ module.exports = {
                         data: user
                     });
                 } else {
-                    throw new CustomErrors.modelNotFOund(404, CustomErrors.messages.modelNotFound);
+                    throw new CustomErrors.modelNotFoundError(404, CustomErrors.messages.modelNotFound);
                 }
             } catch (err) {
                 if (err instanceof CustomErrors.genericError) {
