@@ -14,6 +14,5 @@ module.exports = function(app) {
     apiRoutes.use('/users', UserRoutes);
     apiRoutes.use('/auth' , AuthRoutes);
     apiRoutes.all('*', (req, res, next) => next(new CustomErrors.routeError(405, req.url + " url route with "  + req.method + " method has not been found ")));
-
-    app.use('/api/' + APIVersion, apiRoutes);
+    app.use('/api/' + APIVersion, apiRoutes)
 }

@@ -1,14 +1,36 @@
 'use strict';
 
+const Role = require('../../../models/role');
+const DBHelper = require('../../../helpers/db');
 const User = require('../../../models/user');
 
 exports.seed = function(knex, Promise) {
-    return knex('users').del()
+    return DBHelper.truncate()
+        .then(function() {
+            return Role.create({
+                authority: 'root'
+            }, {})
+        })
+        .then(function() {
+            return Role.create({
+                authority: 'admin'
+            }, {})
+        })
+        .then(function() {
+            return Role.create({
+                authority: 'user'
+            }, {})
+        })
+        .then(function() {
+            return Role.create({
+                authority: 'guest'
+            }, {})
+        })
         .then(function() {
             return User.create({
                 role_id: 1,
                 username: 'flocateur',
-                email: 'fleprovost@gmail.com',
+                email: 'flocateur@gmail.com',
                 password: 'pwd'
             }, {})
         })
@@ -35,5 +57,5 @@ exports.seed = function(knex, Promise) {
                 email: 'maryam@gmail.com',
                 password: 'pwd'
             }, {})
-        })
+        });
 };

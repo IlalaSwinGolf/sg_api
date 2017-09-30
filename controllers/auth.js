@@ -10,6 +10,7 @@ module.exports = {
     signup: (req, res, next) => {
         Promise.coroutine(function*() {
             try {
+                if ("role_id" in req.body || "disabled" in req.body) throw new CustomErrors.forbiddenActionError(403, CustomErrors.messages.tooLowAuthority);
                 let user = yield User.create(req.body, {});
                 user = yield User.findOne({
                     id: user.id
@@ -36,13 +37,14 @@ module.exports = {
         } = req.body;
         Promise.coroutine(function*() {
             try {
-                const user = yield User.where('username', username).fetch();
+                const user = yield User.findOne({'username': username},{});
+                if(!user) throw new CustomErrors.authenticationError(401, CustomErrors.messages.userNotFound);
                 const isValidPassword = yield user.validPassword(password);
                 if (isValidPassword) {
                     const token = Jwt.encode(user, SecurityConfig.jwtSecret);
                     res.status(200).json({
                         success: true,
-                        token: `${token}`
+                        token: `JWT ${token}`
                     });
                 } else {
                     next(new CustomErrors.authenticationError(401, CustomErrors.messages.wrongPassword));

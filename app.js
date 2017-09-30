@@ -6,9 +6,7 @@ const BodyParser = require('body-parser');
 const Router = require('./router');
 const Passport = require('passport');
 const ConfigurePassport = require('./config/passport-jwt-config');
-const DevError = require('./middlewares/dev-error-handler');
-const ProdError = require('./middlewares/prod-error-handler');
-
+const ErrorHandler = require('./middlewares/error-handler');
 
 const App = Express();
 
@@ -22,9 +20,6 @@ App.use(BodyParser.urlencoded({
 
 Router(App);
 
-if (App.get('env') === 'development') {
-  App.use(DevError.handler);
-}
-App.use(ProdError.handler);
+App.use(ErrorHandler);
 
 module.exports = App;

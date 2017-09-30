@@ -7,17 +7,17 @@ const server = require('../bin/www');
 const APIVersion = require('../api_version')();
 const config = require('../knexfile')[process.env.NODE_ENV];
 const knex = require('knex')(config);
-const TestHelper = require('../helpers/test');
+const DBHelper = require('../helpers/db');
 
 chai.use(chaiHttp);
 
 describe('Roles routes', function() {
     beforeEach(function(done) {
-        TestHelper.migrate().then(TestHelper.truncate).then(TestHelper.seed).then(function(){ done();});
+        DBHelper.migrate().then(DBHelper.truncate).then(DBHelper.seed).then(function(){ done();});
     });
 
     afterEach(function(done) {
-        TestHelper.truncate().then(TestHelper.migrate).then(function(){ done();});
+        DBHelper.truncate().then(function(){ done();});
     });
 
 

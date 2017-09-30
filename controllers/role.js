@@ -6,7 +6,7 @@ const CustomErrors = require('../helpers/custom-errors');
 
 module.exports = {
 
-    fetchAll: (req, res, next) => {
+    findAll: (req, res, next) => {
         Promise.coroutine(function*() {
             try {
                 const roles = yield Role.findAll(req.query, {});

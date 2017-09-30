@@ -3,7 +3,7 @@
 exports.up = function(knex, Promise) {
     return knex.schema.createTableIfNotExists('roles', function(table) {
         table.increments('id').unsigned().primary();
-        table.string('name').unique().notNullable();
+        table.string('authority').unique().notNullable();
         table.timestamps();
     });
 };

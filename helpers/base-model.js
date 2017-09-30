@@ -1,6 +1,9 @@
 'use strict';
 
 const Bookshelf = require('../bookshelf');
+const CustomErrors = require('../helpers/custom-errors');
+const Promise = require('bluebird');
+
 
 const Model = Bookshelf.Model.extend({
     hasTimestamps: true,
@@ -10,7 +13,7 @@ const Model = Bookshelf.Model.extend({
     },
 
     findOne: function(query, options) {
-        return this.forge(query).fetch(options);
+        return this.forge(query).refresh(options);
     },
 
     create: function(data, options) {
