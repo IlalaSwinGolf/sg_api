@@ -24,13 +24,17 @@ const CustomErrors = {
     modelNotFoundError: function(status, message) {
         CustomErrors.genericError.call(this, status, message, CustomErrors.types.modelNotFoundError);
     },
+    tokenExpired: function(status, message) {
+        CustomErrors.genericError.call(this, status, message, CustomErrors.types.tokenExpired);
+    },
     types: {
         applicationError: "Application error",
         duplicateEntryError: "Duplicate entry error",
         authenticationError: "Authentication error",
         routeError: "Route error",
         forbiddenActionError: "Forbbiden action error",
-        modelNotFOundError: "Model not found error"
+        modelNotFOundError: "Model not found error",
+        tokenExpired: "Expiration token error"
     },
     messages: {
         nonUniqueEmail: "Email is already used.",
@@ -43,6 +47,7 @@ const CustomErrors = {
         notAuthenticated: "You are not authenticated.",
         userNotFound: "User not found.",
         restrictedFields: "You can't update restricted fields of an other user.",
+        tokenExpired: "Link has expired, please try again."
     },
 };
 CustomErrors.genericError.prototype = Error.prototype;
