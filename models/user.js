@@ -12,7 +12,7 @@ const User = BaseModel.extend({
     tableName: 'users',
     hidden: ['password', 'role_id'],
 
-    update: function(currentUser, fields, options) {
+    update: function (currentUser, fields, options) {
         if (currentUser.canUpdate(this, fields)) {
             if (fields.hasOwnProperty("role_id")) {
                 fields.role_id = parseInt(fields.role_id);
@@ -20,10 +20,10 @@ const User = BaseModel.extend({
             return this.save(fields, options);
         }
     },
-    canUpdate: function(userToUpdate, fields) {
+    canUpdate: function (userToUpdate, fields) {
         return this.canUpdateRestrictedFields(userToUpdate, fields) && this.canDisableAnUser(fields) && this.canUpdateRole(fields);
     },
-    canDisableAnUser: function(fields) {
+    canDisableAnUser: function (fields) {
         if (fields.hasOwnProperty("disabled")) {
             if (!this.isAtLeastAdmin()) {
                 throw new CustomErrors.forbiddenActionError(401, CustomErrors.messages.tooLowAuthority);
@@ -31,13 +31,13 @@ const User = BaseModel.extend({
         }
         return true;
     },
-    canUpdateRestrictedFields: function(userToUpdate, fields) {
+    canUpdateRestrictedFields: function (userToUpdate, fields) {
         if (this.id != userToUpdate.id && (fields.hasOwnProperty("username") || fields.hasOwnProperty("password") || fields.hasOwnProperty("email"))) {
             throw new CustomErrors.forbiddenActionError(401, CustomErrors.messages.restrictedFields);
         }
         return true;
     },
-    canUpdateRole: function(fields) {
+    canUpdateRole: function (fields) {
         if (fields.hasOwnProperty("role_id")) {
             if (this.isAtLeastAdmin() && this.related('role').isPowerfull(fields.role_id)) {
                 return true;
@@ -46,24 +46,24 @@ const User = BaseModel.extend({
         }
         return true;
     },
-    isAtLeastAdmin: function() {
+    isAtLeastAdmin: function () {
         return this.hasAdminAuthority() || this.hasRootAuthority();
     },
-    role: function() {
+    role: function () {
         return this.belongsTo('Role', 'role_id');
     },
-    hasRootAuthority: function() {
+    hasRootAuthority: function () {
         return this.related('role').attributes.authority == "root";
     },
-    hasAdminAuthority: function() {
+    hasAdminAuthority: function () {
         return this.related('role').attributes.authority == "admin";
     },
-    hasUserAuthority: function() {
+    hasUserAuthority: function () {
         return this.related('role').attributes.authority == "user";
     },
-    assertUsernameIsUnique: function(model, attrs, options) {
+    assertUsernameIsUnique: function (model, attrs, options) {
         if (!model.hasChanged('username')) return;
-        return Promise.coroutine(function*() {
+        return Promise.coroutine(function* () {
             const user = yield User.findOne({
                 username: model.attributes.username
             }, {});
@@ -72,9 +72,9 @@ const User = BaseModel.extend({
             }
         })();
     },
-    assertEmailIsUnique: function(model, attrs, options) {
+    assertEmailIsUnique: function (model, attrs, options) {
         if (!model.hasChanged('email')) return;
-        return Promise.coroutine(function*() {
+        return Promise.coroutine(function* () {
             const user = yield User.findOne({
                 email: model.attributes.email
             }, {});
@@ -86,8 +86,8 @@ const User = BaseModel.extend({
     validPassword(password) {
         return Bcrypt.compareAsync(password, this.attributes.password);
     },
-    hashPassword: function(model, attrs, options) {
-        return Promise.coroutine(function*() {
+    hashPassword: function (model, attrs, options) {
+        return Promise.coroutine(function* () {
             if (!model.hasChanged('password')) return;
             const salt = yield Bcrypt.genSaltAsync(SecurityConfig.saltRounds);
             const hashedPassword = yield Bcrypt.hashAsync(model.attributes.password, salt);

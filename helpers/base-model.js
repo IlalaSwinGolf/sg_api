@@ -8,15 +8,15 @@ const Promise = require('bluebird');
 const Model = Bookshelf.Model.extend({
     hasTimestamps: true,
 }, {
-    findAll: function(filter, options) {
+    findAll: function (filter, options) {
         return this.forge().where(filter).fetchAll(options);
     },
 
-    findOne: function(query, options) {
+    findOne: function (query, options) {
         return this.forge(query).refresh(options);
     },
 
-    create: function(data, options) {
+    create: function (data, options) {
         return this.forge(data).save(null, options);
     },
 });

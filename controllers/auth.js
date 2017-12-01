@@ -31,26 +31,34 @@ module.exports = {
                     method: "update",
                     require: true
                 });
-                let host = process.env.API_HOST || 'http://localhost:8000';
-                let URL = host + req.originalUrl + '/validate/' + user.attributes.restPasswordToken;
+                if (process.env.NODE_ENV !== 'test') {
+                    let host = process.env.API_HOST || 'http://localhost:8000';
+                    let URL = host + req.originalUrl + '/validate/' + user.attributes.restPasswordToken;
 
-                let mailOptions = {
-                    from: 'support@swinscore.net',
-                    to: user.attributes.email,
-                    subject: 'Activation de votre compte swinscore.net',
-                    html: 'Cliquer sur le lien suivant pour activer votre compte:<p><a href=' + URL + '>Lien </a></p>!'
-                };
-                Mailer.send(mailOptions, function (err, info) {
-                    if (err) {
-                        next(err);
-                    } else {
-                        res.status(201).json({
-                            success: true,
-                            data: user,
-                            message: info.response
-                        });
-                    }
-                });
+                    let mailOptions = {
+                        from: 'support@swinscore.net',
+                        to: user.attributes.email,
+                        subject: 'Activation de votre compte swinscore.net',
+                        html: 'Cliquer sur le lien suivant pour activer votre compte:<p><a href=' + URL + '>Lien </a></p>!'
+                    };
+                    Mailer.send(mailOptions, function (err, info) {
+                        if (err) {
+                            next(err);
+                        } else {
+                            res.status(201).json({
+                                success: true,
+                                data: user,
+                                message: info.response
+                            });
+                        }
+                    });
+                } else {
+                    res.status(201).json({
+                        success: true,
+                        data: user
+                    });
+                }
+
             } catch (err) {
                 if (err instanceof CustomErrors.genericError) {
                     next(err);

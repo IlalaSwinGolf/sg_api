@@ -11,60 +11,60 @@ const DBHelper = require('../helpers/db');
 const CustomErrors = require('../helpers/custom-errors');
 
 const correctUser = {
-    username: 'username_test',
-    email: 'email_test',
-    password: 'password_test',
+    username: 'correct_user_test',
+    email: 'email_correct_user_test',
+    password: 'password_correct_user_test',
 };
 
 const nonUniqueEmailUser = {
-    username: 'username',
-    email: 'email_test',
-    password: 'password_test',
+    username: 'non_unique_email_user_test',
+    email: 'email_correct_user_test',
+    password: 'password_non_unique_email_user_test',
 };
 
 const nonUniqueUsernameUser = {
-    username: 'username_test',
-    email: 'email',
-    password: 'password_test',
+    username: 'correct_user_test',
+    email: 'email_non_unique_username_user_test',
+    password: 'password_non_unique_username_user_test',
 };
 
 const nonDisabledUser = {
-    username: 'non_disabled_user',
-    email: 'non_disabled_user',
-    password: 'password_test',
+    username: 'non_disabled_user_test',
+    email: 'email_non_disabled_user_test',
+    password: 'password_non_disabled_user_test',
     disabled: false
 };
 
 const badAuthorityUser = {
-    username: 'non_disabled_user',
-    email: 'non_disabled_user',
-    password: 'password_test',
+    username: 'bas_authority_user_test',
+    email: 'email_bas_authority_user_test',
+    password: 'password_bas_authority_user_test',
     role_id: 1
 };
 
 
 chai.use(chaiHttp);
 
-describe('Authentication', function() {
-    before(function(done) {
-        DBHelper.migrate().then(DBHelper.truncate).then(DBHelper.seed).then(function() {
+describe('Authentication', function () {
+    before(function (done) {
+        DBHelper.migrate().then(DBHelper.truncate).then(DBHelper.seed).then(function () {
             done();
         });
     });
 
-    after(function(done) {
-        DBHelper.truncate().then(function() {
+    after(function (done) {
+        DBHelper.truncate().then(function () {
             done();
         });
     });
 
-    describe('Signup', function() {
+    describe('Signup', function () {
 
-        it('should create a user', function(done) {
+        it('should create a user', function (done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(correctUser)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(201);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -72,9 +72,9 @@ describe('Authentication', function() {
                     res.body.should.have.property('data');
                     res.body.data.should.have.property('id');
                     res.body.data.should.have.property('username');
-                    res.body.data.username.should.equal('username_test');
+                    res.body.data.username.should.equal('correct_user_test');
                     res.body.data.should.have.property('email');
-                    res.body.data.email.should.equal('email_test');
+                    res.body.data.email.should.equal('email_correct_user_test');
                     res.body.data.should.have.property('disabled');
                     res.body.data.disabled.should.equal(true);
                     res.body.data.should.have.property('role');
@@ -85,11 +85,11 @@ describe('Authentication', function() {
                     done();
                 });
         });
-        it('should failed to create an user because username is already used', function(done) {
+        it('should failed to create an user because username is already used', function (done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(nonUniqueUsernameUser)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -101,12 +101,12 @@ describe('Authentication', function() {
                     done();
                 });
         });
-        it('should failed to create an user because email is already used', function(done) {
+        it('should failed to create an user because email is already used', function (done) {
 
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(nonUniqueEmailUser)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(422);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -119,12 +119,12 @@ describe('Authentication', function() {
                 });
 
         });
-        it('should failed to create an user because disabled property is set', function(done) {
+        it('should failed to create an user because disabled property is set', function (done) {
 
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(nonDisabledUser)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -137,11 +137,11 @@ describe('Authentication', function() {
                 });
 
         });
-            it('should failed to create an user because role_id property is set', function(done) {
+        it('should failed to create an user because role_id property is set', function (done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signup')
                 .send(badAuthorityUser)
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(403);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -158,16 +158,16 @@ describe('Authentication', function() {
 
     });
 
-    describe('Signin', function() {
+    describe('Signin', function () {
 
-        it('should send a JWT token', function(done) {
+        it('should send a JWT token', function (done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signin')
                 .send({
                     username: correctUser.username,
                     password: correctUser.password
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(200);
                     res.should.be.json;
                     res.body.should.have.property('success');
@@ -176,14 +176,14 @@ describe('Authentication', function() {
                     done();
                 });
         });
-        it('should send a 401 status with wrong password error', function(done) {
+        it('should send a 401 status with wrong password error', function (done) {
             chai.request(server)
                 .post('/api/' + APIVersion + '/auth/signin')
                 .send({
                     username: correctUser.username,
                     password: "Wrong password"
                 })
-                .end(function(err, res) {
+                .end(function (err, res) {
                     res.should.have.status(401);
                     res.should.be.json;
                     res.body.should.have.property('success');
